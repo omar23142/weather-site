@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: play;
+  src: url('/public/fonts/Playwrite_DE_SAS/PlaywriteDESAS-VariableFont_wght.ttf');
+}
+
+@font-face {
+  font-family: mogra;
+  src: url('/public/fonts/Mogra/Mogra-Regular.ttf');
+}
+
+body {
+  min-height: 100vh;
+  background-image: url('../public/rain.jpeg') ;
+  background-attachment: fixed;
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-position:center;
+
+
+}
