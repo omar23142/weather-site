@@ -32,7 +32,7 @@ const card = (
             </Box>
             <Typography variant="h6" component="div" style={{}}> {t('Moderate')}</Typography> 
              <Slider
-        dir={language === 'ar' ? 'rtl' : 'ltr'}
+        // dir={language === 'ar' ? 'rtl' : 'ltr'}
         sx={{  transform: language === 'ar' ? 'scaleX(-1)' : 'scaleX(1)'}}
         aria-label="Temperature"
         defaultValue={30}

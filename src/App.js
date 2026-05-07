@@ -143,7 +143,7 @@ axios.get("http://api.weatherapi.com/v1/forecast.json", {
     signal: controller.signal
   })
   .then((response) => {
-    // console.log(response.data);
+    console.log(response.data);
     console.log('currenttttttttt', response.data.current.temp_c)
     // console.log('in useeffect', response.data.current.condition)
     // console.log('in response.data.forecast.forecastday', response.data.forecast.forecastday)
