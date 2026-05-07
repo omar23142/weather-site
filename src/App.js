@@ -132,7 +132,7 @@ const formattedDate = now.toLocaleDateString('en-GB');
     console.log('start useEffectttttttt', cityInput)
     const controller = new AbortController();
      
-axios.get("http://api.weatherapi.com/v1/forecast.json", {
+axios.get("https://api.weatherapi.com/v1/forecast.json", {
   
     params: {
       
