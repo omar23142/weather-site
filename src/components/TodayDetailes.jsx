@@ -12,6 +12,7 @@ import Divider from '@mui/material/Divider';
 import QueryBuilderIcon from '@mui/icons-material/QueryBuilder';
 import DetailesCArd from './DetailesCard';
 import Stack from '@mui/material/Stack';
+import { useTranslation } from 'react-i18next';
 
 
 
@@ -20,12 +21,12 @@ import Stack from '@mui/material/Stack';
 
 export default function TodayDetailes({children, title}) {
   // console.log('childddddd', children)
-
+const { t, i18n } = useTranslation();
 const card = (
   <React.Fragment>
     <CardContent style={{background:''}}>
-      <Typography variant="h5" component="div"  sx={{  marginLeft:'5px', color: 'rgba(199, 196, 196, 0.7)', fontSize: 14 , display:"flex", aligenItems:"center"}}>
-        <QueryBuilderIcon style={{marginRight:'3px'}}/> {title}
+      <Typography variant="h5" component="div"  sx={{  marginInlineStart:'5px', color: 'rgba(199, 196, 196, 0.7)', fontSize: 14 , display:"flex", aligenItems:"center"}}>
+        <QueryBuilderIcon style={{marginInlineEnd:'3px'}}/> {t(title)}
       </Typography>
       <hr style={{color:'blue'}}/>
       <Divider sx={{color:'blue'}}/>

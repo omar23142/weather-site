@@ -1,3 +1,27 @@
 
 
-{"Damascus":"دمشق"}
+{
+    "Damascus":"دمشق",
+    "feels like":"الشعور الحقيقي",
+    "precipitation":"احتمال الهطول",
+    "visibility":"الرؤية",
+    "humidity":"الرطوبة",
+    "humidity makes it feel warmer":"الشعور بالحرارة أعلى بسبب الرطوبة",
+    "in last 24 hour":"في أخر 24 ساعة",
+    "the dew point is" :"تبلغ درجة التكثف ",
+    "C right now": " درجة مئوية الآن",
+    "Hourly Forecast":"توقعات الطقس لكل ساعة",
+    "10 Day Forecast":"توقعات الطقس لعشرة أيام ",
+    "TODAY":"اليوم",
+    "SUN":"الأحد",
+     "MON":"الأثنين",
+      "TUE":"الثلثاء",
+       "WED":"الأربعاء",
+        "THU":"الخميس",
+         "FRI":"الجمعة",
+          "SAT":"السبت",
+          "UV INDEX":"مؤشر الأشعة فوق الحمراء",
+          "Moderate":"معتدل",
+          "WIND":" الرياح",
+          "NOW":"الاّن"
+}

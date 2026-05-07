@@ -11,25 +11,29 @@ import Button from '@mui/material/Button';
 import FiberManualRecordOutlinedIcon from '@mui/icons-material/FiberManualRecordOutlined';
 import DeviceThermostatOutlinedIcon from '@mui/icons-material/DeviceThermostatOutlined';
 import Slider from '@mui/material/Slider';
+import { useTranslation } from 'react-i18next';
 
 function valuetext(value) {
   return `${value}°C`;
 }
 
-export default function UvIndex({number}) {
+export default function UvIndex({number, language = 'en'}) {
+  const { t } = useTranslation();
 const card = (
   <React.Fragment>
     <CardContent>
       <Typography gutterBottom sx={{ color: 'rgba(199, 196, 196, 0.7)', fontSize: 12 ,display:'flex'}}>
-        <DeviceThermostatOutlinedIcon/> UV INDEX
+        <DeviceThermostatOutlinedIcon/> {t('UV INDEX')}
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'left', justifyContent: '' }}>
         <Typography variant="h6" component="div" style={{alignItems:''}}> {number}</Typography> 
         {/* <FiberManualRecordOutlinedIcon sx={{fontSize:'small', marginBottom:'40px', color:'white'}}/> */}
         {/* <FiberManualRecordOutlinedIcon fontSize='small'/> */}
             </Box>
-            <Typography variant="h6" component="div" style={{}}> Moderate</Typography> 
+            <Typography variant="h6" component="div" style={{}}> {t('Moderate')}</Typography> 
              <Slider
+        dir={language === 'ar' ? 'rtl' : 'ltr'}
+        sx={{  transform: language === 'ar' ? 'scaleX(-1)' : 'scaleX(1)'}}
         aria-label="Temperature"
         defaultValue={30}
         getAriaValueText={valuetext}
@@ -45,7 +49,7 @@ const card = (
 );
 
   return (
-    <Card variant="outlined" sx={{ width: '50%',marginTop:'10px', minHeight: '70%',background:'rgba(0, 0, 0, 0.87)', color:'white', borderBottomColor:'black', borderRadius:'15px' }}>
+    <Card variant="outlined" sx={{ flex: 1, marginTop:'10px', minHeight: '70%',background:'rgba(0, 0, 0, 0.87)', color:'white', borderBottomColor:'black', borderRadius:'15px' }}>
       {card}
     </Card>
   );

@@ -12,36 +12,37 @@ import DeviceThermostatOutlinedIcon from '@mui/icons-material/DeviceThermostatOu
 import WaterDropOutlinedIcon from '@mui/icons-material/WaterDropOutlined';
 import OpacitySharpIcon from '@mui/icons-material/OpacitySharp';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { useTranslation } from 'react-i18next';
 
 
 
-export  function OutlinedCard({icon, title, number, detailes, sx, extradetailes}) {
-
-  let initIcon = <DeviceThermostatOutlinedIcon sx={{ marginLeft: '5px' }} />
+export  function OutlinedCard({icon, title, number, detailes, sx, extradetailes, dewpoint}) {
+   const { t, i18n } = useTranslation();
+  let initIcon = <DeviceThermostatOutlinedIcon sx={{ marginInlineStart: '5px' }} />
   if(title === 'precipitation')
-    initIcon = <WaterDropOutlinedIcon sx={{ marginLeft: '5px' }}/>
+    initIcon = <WaterDropOutlinedIcon sx={{ marginInlineStart: '5px' }}/>
   else if (title === 'humidity') 
-    initIcon = <OpacitySharpIcon sx={{ marginLeft: '5px' }}/>
+    initIcon = <OpacitySharpIcon sx={{ marginInlineStart: '5px' }}/>
   else if (title === 'visibility') 
-    initIcon = <VisibilityOutlinedIcon sx={{ marginLeft: '5px' }}/>
+    initIcon = <VisibilityOutlinedIcon sx={{ marginInlineStart: '5px' }}/>
   const card = (
   <React.Fragment>
     <CardContent>
       
-      <Typography gutterBottom sx={{ color: 'rgba(199, 196, 196, 0.7)', fontSize: 16 , marginRight:'40px',marginLeft:'-8px', display:'flex',justifyContent:'flexStart'}}>
+      <Typography gutterBottom sx={{ color: 'rgba(199, 196, 196, 0.7)', fontSize: 16 , marginInlineEnd:'40px',marginInlineStart:'-8px', display:'flex',justifyContent:'flexStart'}}>
        {/* <DeviceThermostatOutlinedIcon sx={{ marginLeft: '5px' }} /> */}
        {initIcon}
-        {icon} {title} </Typography>
+        {icon} {t(title)} </Typography>
       <Box sx={{ display: 'flex', alignItems: '', justifyContent: '' }}>
         <Typography variant="h5" component="div" sx={{ fontFamily:'mogra'}}>  {number} </Typography> 
         { title === 'feels like' && <FiberManualRecordOutlinedIcon sx={{fontSize:'small', marginBottom:'40px', color:'white'}}/>}
         {/* <FiberManualRecordOutlinedIcon fontSize='small'/> */}
             </Box>
       <Typography variant="body2"sx={{ color:'rgba(199, 196, 196, 0.7)', fontSize: 10,alignItems:'left',display:'flex',justifyContent:'flexStart' }}>
-         {detailes}
+         {t(detailes)} {dewpoint}
       </Typography>
       <Typography variant="body2"sx={{ color:'rgba(199, 196, 196, 0.7)', fontSize: 10,alignItems:'left',display:'flex',justifyContent:'flexStart'}}>
-         {extradetailes}
+         {t(extradetailes)}
       </Typography>
     </CardContent>
   </React.Fragment>

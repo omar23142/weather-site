@@ -15,9 +15,11 @@ import FiberManualRecordOutlinedIcon from '@mui/icons-material/FiberManualRecord
 import CloudySnowingIcon from '@mui/icons-material/CloudySnowing';
 import Stack from '@mui/material/Stack';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-export default function DetailesCard({hour='NOW', temp=28,weatherState='',date, selected, icon}) {
+export default function DetailesCard({hour='',day='', temp=28,weatherState='',date, selected, icon}) {
   // console.log('icon', icon)
+  const { t, i18n } = useTranslation();
     const [dateDis, setDateDis] = useState(false);
     // console.log('selectedddd', selected)
     // console.log('ttttttttt', `${selected} ? white : transparent`)
@@ -26,26 +28,30 @@ export default function DetailesCard({hour='NOW', temp=28,weatherState='',date, 
         if(date)
             {
                 setDateDis(true);
-                return <p style={{marginLeft:'6px', color: 'rgba(228, 211, 211, 0.4)'}}>{date}</p>}
+                return <p style={{marginInlineStart:'6px', color: 'rgba(228, 211, 211, 0.4)'}}>{date}</p>}
         return null }
 
     // console.log('hour', hour)
-    let weatherIcon = <CloudySnowingIcon fontSize='large' style={{marginLeft:'5px', marginTop:'-20px', background:''}}/>
+    let weatherIcon = <CloudySnowingIcon fontSize='large' style={{marginInlineStart:'5px', marginTop:'-20px', background:''}}/>
     const card = (
   <React.Fragment>
     <CardContent style={{borderRadius:'15px',background:'', }}>
         <Stack spacing={0}>
-      <Typography variant="h5" component="div"  sx={{color:'white', marginLeft:'10px', fontSize: 14 , display:"flex", aligenItems:"center"}}>
+      
+        <Typography variant="h5" component="div"  sx={{color:'white', marginInlineStart:'10px', fontSize: 14 , display:"flex", aligenItems:"center"}}>
         {hour}
-         
-        
       </Typography>
+
+        <Typography variant="h5" component="div"  sx={{color:'white', marginInlineStart:'10px', fontSize: 14 , display:"flex", aligenItems:"center"}}>
+        {t(day)}
+      </Typography>
+
        <DateDisplay/> 
       {/* <p>{date}</p> */}
-      <Typography variant="h6" component="div"  sx={{background:'', color:'white', marginLeft:'10px', fontSize: 20 , display:"flex", aligenItems:"center",marginBottom:'none'}}>
+      <Typography variant="h6" component="div"  sx={{background:'', color:'white', marginInlineStart:'10px', fontSize: 20 , display:"flex", aligenItems:"center",marginBottom:'none'}}>
         {temp} <FiberManualRecordOutlinedIcon sx={{fontSize:'small', marginBottom:'40px', color:'white'}}/>
       </Typography>
-      <img src={icon} alt='' style={{marginLeft:'5px', marginTop:'-20px', background:''}} />
+      <img src={icon} alt='' style={{marginInlineStart:'5px', marginTop:'-20px', background:''}} />
        {/* {weatherIcon} */}
         
 

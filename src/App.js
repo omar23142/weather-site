@@ -11,7 +11,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, ButtonBase } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import FiberManualRecordOutlinedIcon from '@mui/icons-material/FiberManualRecordOutlined';
@@ -28,6 +28,7 @@ import { useEffect, useState } from 'react';
 import * as dayjs from 'dayjs'
 import { Today } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
   width: '88%',
@@ -81,6 +82,7 @@ const formattedDate = now.toLocaleDateString('en-GB');
   // console.log('yyyyyyyy', dayjs().get('date'))
   // console.log('houuuuur', dayjs().get('day'))
   let hour = dayjs().get('hour');
+  console.log('hourrrrr', hour)
   let validHours =[]
         // validHours.push(hour);
         for(let i = hour + 1;  i <= 23; i++) {
@@ -94,6 +96,7 @@ const formattedDate = now.toLocaleDateString('en-GB');
   const [APIData, setAPIData] = useState({ icon:'', state:'', temp:12, location:'', humidity:'', precip_mm:'', feelslike_c:'', vis_miles:'', wind_mph:'', wind_kph:'', wind_dir:'', current:'',UvIndex:''});
   const [cityInput, setCityInput] = useState({city:'Damascus', searchClick: false});
   const [TodayDetaileState, setDaisDetailes] = useState([]);
+  const [language, setLanguage] = useState('en');
   const { t, i18n } = useTranslation();
   
   
@@ -106,10 +109,24 @@ const formattedDate = now.toLocaleDateString('en-GB');
     // console.log('fromhandleinputtttttttttt', cityInput.searchClick)
     setCityInput({...cityInput, searchClick:! cityInput.searchClick})
   }
+  function handlelnguageChange(e) {
+    let lan;
+    
+    if (language === 'ar') {
+      i18n.changeLanguage('en');
+      setLanguage('en');
+    }
+  
+    else if(language ==='en') {
+      i18n.changeLanguage('ar');
+      setLanguage('ar');
+    }
+      console.log('languageeee', language)
+  }
  
   // console.log('dddddddddddddddddd', typeof(time), hour)
   useEffect(()=> {
-    i18n.changeLanguage("ar")
+    
   }, []);
   useEffect(()=> {
     console.log('start useEffectttttttt', cityInput)
@@ -169,7 +186,7 @@ controller.abort();
 
   return (
     <ThemeProvider theme={theme}>
-    <div style={{display:'flex', alignItems:'center', justifyContent:'center', background:'',}}>
+    <div dir={language === 'ar' ? 'RTL' : 'LTR'} style={{display:'flex', alignItems:'center', justifyContent:'center', background:'',}}>
       
        <Container maxWidth="lg" style={{ 
         // background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.2) 100%)',
@@ -190,7 +207,7 @@ controller.abort();
           borderRadius: 1,
           display:'flex', alignItems:'center', justifyContent:'center',
           fontSize:'50px',
-          marginLeft:'170px',
+          marginInlineStart:'170px',
           color:'white',
           marginTop:'60px'
         }}
@@ -198,7 +215,7 @@ controller.abort();
         {APIData.temp} <FiberManualRecordOutlinedIcon sx={{fontSize:'small', marginBottom:'40px', color:'white'}}/>
         
         </Box>
-        <img src={TodayDetaileState[0]?.day?.condition?.icon} alt='' style={{marginLeft:'100px', marginTop:'-20px', height:'200px', width:'200px'}} />
+        <img src={TodayDetaileState[0]?.day?.condition?.icon} alt='' style={{marginInlineStart:'100px', marginTop:'-20px', height:'200px', width:'200px'}} />
         <div style={{ background:'', color:'white'}}> {APIData.state} 
           
           {/* <div style={{background:'', fontSize:'10px', color:'white'}}> this is more detailse discript </div> */}
@@ -220,11 +237,14 @@ controller.abort();
            <Grid size={6} style={{background:''}}>
             <Stack spacing={4}>
              <OutlinedCard variant="outlined" title='precipitation' number={`${APIData.precip_mm}`}
-             detailes= 'in last 24 hour ' 
+             detailes= 'in last 24 hour' 
             //  extradetailes = '2 expected in next 24 hour' 
              ></OutlinedCard>
              <OutlinedCard variant="outlined" title = 'humidity' number={`${APIData.humidity}%`}
-             detailes={`the dew point is ${APIData.current.dewpoint_c} C right now `}></OutlinedCard>
+             detailes={`the dew point is`}
+             dewpoint={APIData.current.dewpoint_c}
+             extradetailes={'C right now'}>
+             </OutlinedCard>
             </Stack>
            </Grid>
          </Grid>
@@ -248,7 +268,7 @@ controller.abort();
                 {/* {console.log('aaaaaaaa', daysDetailes[0].day.condition.icon)} */}
                 {/* {console.log('hourhhhhhhh', hour)} */}
                 
-                 <DetailesCArd selected={true} temp={TodayDetaileState[0]?.hour[hour].temp_c} icon={TodayDetaileState[0]?.day.condition.icon}/> 
+                 <DetailesCArd day='NOW' selected={true} temp={TodayDetaileState[0]?.hour[hour].temp_c} icon={TodayDetaileState[0]?.day.condition.icon}/> 
                  
                   
                    {validHours.map((hour) => (
@@ -271,14 +291,15 @@ controller.abort();
               </TodayDetailes>
                 
               <TodayDetailes title='10 Day Forecast'> 
-                <DetailesCArd hour='TODAY' selected={true} date={formattedDate}  icon={TodayDetaileState[0]?.day?.condition?.icon}/> 
+                <DetailesCArd hour='' day='TODAY' selected={true} date={formattedDate}  icon={TodayDetaileState[0]?.day?.condition?.icon}/> 
                 {
                 
                 Array.from({ length: 9 }, (_, i) => i + 1).map((i) => (
                   
                     <DetailesCArd
                       key={i} 
-                      hour={days[(dayjs().day() + i) % days.length]}
+                      day={days[(dayjs().day() + i) % days.length]}
+                      hour={''}
                       date={dayjs(TodayDetaileState[i]?.date).format("DD/MM/YYYY")}
                       temp={TodayDetaileState[i]?.day?.avgtemp_c}
                       icon={TodayDetaileState[i]?.day?.condition?.icon}
@@ -287,14 +308,18 @@ controller.abort();
                 
               </TodayDetailes>
             
-            <Stack direction={'row'} spacing={1} sx={{marginTop:'15px'}}>
-             <UvIndex number={APIData.current.uv}/>
-             <Wind number1={APIData.wind_mph} number2={APIData.wind_kph}/>
-             </Stack>
+            <Stack direction={'row'} spacing={2} sx={{marginTop:'15px'}}>
+              <UvIndex language={language} number={APIData.current.uv}/>
+              {language === 'ar' ? <Box style={{width:'2px'}} /> : null }
+              <Wind language={language} number1={APIData.wind_mph} number2={APIData.wind_kph}/>
+              </Stack>
             </Stack>
-            
+            <Button value={language} onClick={handlelnguageChange} 
+            style={{color:'white', fontSize:'22px', marginInlineStart:'200px'}}> change To {language ==='ar'? 'en':'ar' }  </Button>
           </Grid>
+          
         </Grid>  
+        
           
        </Container>
         {/* <OutlinedCard variant="outlined"></OutlinedCard> */}
