@@ -73,14 +73,14 @@ function App() {
   const now = new Date();
 // console.log('nowwwww', now);
 const formattedDate = now.toLocaleDateString('en-GB'); 
-// console.log('nowwwww', formattedDate)
+console.log('nowwwww', formattedDate)
   // let daynum = dayjs().day()
   // console.log('daynummmmm', daynum)
   // const year = dayjs().get('year')
   // console.log('dayyyyyyyyyy', year)
   // dayjs().get('month') // start 0
   // console.log('yyyyyyyy', dayjs().get('date'))
-  // console.log('houuuuur', dayjs().get('day'))
+  console.log('daayyyyyyy', dayjs().get('day'))
   let hour = dayjs().get('hour');
   console.log('hourrrrr', hour)
   let validHours =[]
@@ -291,7 +291,7 @@ controller.abort();
               </TodayDetailes>
                 
               <TodayDetailes title='10 Day Forecast'> 
-                <DetailesCArd hour='' day='TODAY' selected={true} date={formattedDate}  icon={TodayDetaileState[0]?.day?.condition?.icon}/> 
+                <DetailesCArd hour='' day='TODAY' selected={true} date={formattedDate} temp={TodayDetaileState[0]?.day?.avgtemp_c}  icon={TodayDetaileState[0]?.day?.condition?.icon}/> 
                 {
                 
                 Array.from({ length: 9 }, (_, i) => i + 1).map((i) => (
