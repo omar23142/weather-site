@@ -28,7 +28,10 @@ import { useEffect, useState } from 'react';
 import * as dayjs from 'dayjs'
 import { Today } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-
+import { useSelector, useDispatch } from 'react-redux';
+import {languageAction, cityInputAction} from './features/axious/axiousSlice';
+import {fetchAxiosData} from './features/axious/axiousSlice'
+import CircularProgress from '@mui/material/CircularProgress';
 
 const DemoPaper = styled(Paper)(({ theme }) => ({
   width: '88%',
@@ -93,94 +96,119 @@ console.log('nowwwww', formattedDate)
   // console.log(hour)
 
 
-  const [APIData, setAPIData] = useState({ icon:'', state:'', temp:12, location:'', humidity:'', precip_mm:'', feelslike_c:'', vis_miles:'', wind_mph:'', wind_kph:'', wind_dir:'', current:'',UvIndex:''});
-  const [cityInput, setCityInput] = useState({city:'Damascus', searchClick: false});
-  const [TodayDetaileState, setDaisDetailes] = useState([]);
-  const [language, setLanguage] = useState('en');
+  // const [APIData, setAPIData] = useState({ icon:'', state:'', temp:12, location:'', humidity:'', precip_mm:'', feelslike_c:'', vis_miles:'', wind_mph:'', wind_kph:'', wind_dir:'', current:'',UvIndex:''});
+  // const [cityInput, setCityInput] = useState({city:'Damascus', searchClick: false});
+  // const [TodayDetaileState, setDaisDetailes] = useState([]);
+  // const [language, setLanguage] = useState('en');
   const { t, i18n } = useTranslation();
+
+  const isLoadding = useSelector((state)=>{
+    console.log('state.initialState.isLoadding;;;;;;;;;;;;;;', state.API.isLoadding)
+    return state.API.isLoadding;
+  })
+  const language = useSelector((state)=>{
+      console.log ('++++++++++++++', state.API.language);
+      return state.API.language;
+    });
+    const TodayDetaileState = useSelector((state)=>{
+      return state.API.TodayDetaileState;
+    })
+
+    const APIData = useSelector((state)=>{
+      return state.API.APIData;
+    });
+    const cityInput = useSelector((state)=>{
+      return state.API.cityInput;
+    })
+
+   const dispatch = useDispatch()
   
   
   function handleInputChange(e) {
     console.log('fromhandleinputttttttt',e.target.value)
-    setCityInput({...cityInput, city:e.target.value})
+    // setCityInput({...cityInput, city:e.target.value})
+    dispatch(cityInputAction({...cityInput, city:e.target.value}))
   }
 
   function handleSearchClick() {
     // console.log('fromhandleinputtttttttttt', cityInput.searchClick)
-    setCityInput({...cityInput, searchClick:! cityInput.searchClick})
+    // setCityInput()
+        dispatch(cityInputAction({...cityInput, searchClick:! cityInput.searchClick}))
   }
   function handlelnguageChange(e) {
-    let lan;
-    
     if (language === 'ar') {
       i18n.changeLanguage('en');
-      setLanguage('en');
+      // setLanguage('en');
+      dispatch(languageAction('en'))
     }
   
     else if(language ==='en') {
       i18n.changeLanguage('ar');
-      setLanguage('ar');
+      // setLanguage('ar');
+      dispatch(languageAction('ar'))
     }
       console.log('languageeee', language)
   }
+
+  console.log('dddddddddddddddddd', typeof(time), hour)
+
  
-  // console.log('dddddddddddddddddd', typeof(time), hour)
-  useEffect(()=> {
-    
-  }, []);
   useEffect(()=> {
     console.log('start useEffectttttttt', cityInput)
-    const controller = new AbortController();
-     
-axios.get("https://api.weatherapi.com/v1/forecast.json", {
-  
-    params: {
-      
-      key:'0618db3d343a4a6698373524260205',
-      q:`${cityInput.city}`,
-      days:'10'
-    },
-    signal: controller.signal
-  })
-  .then((response) => {
-    console.log(response.data);
-    console.log('currenttttttttt', response.data.current.temp_c)
-    // console.log('in useeffect', response.data.current.condition)
-    // console.log('in response.data.forecast.forecastday', response.data.forecast.forecastday)
-    // console.log('currentttttttt', response.data.current)
-    // console.log('in useeffect', response.data.location.name)
-    const daysDetailes = response.data.forecast.forecastday;
-    // console.log('ddddddddddddaaa', daysDetailes)
-    const icon = response.data.current.condition.icon;
-    const state = response.data.current.condition.text;
-    const temp = response.data.current.temp_c;
-    const location = response.data.location.name;
-    const humidity = response.data.current.humidity;
-    const precip_mm = response.data.current.precip_mm;
-    const feelslike_c = response.data.current.feelslike_c;
-    const vis_miles = response.data.current.vis_miles;
-    const wind_mph = response.data.current.wind_mph;
-    const wind_kph = response.data.current.wind_kph;
-    const wind_dir = response.data.current.wind_dir;
-    const current = response.data.current;
     
-    setAPIData({ icon, state, temp, location, humidity, precip_mm, feelslike_c, vis_miles, wind_mph, wind_kph, wind_dir, current});
-    setDaisDetailes(daysDetailes)
-    // console.log('dayyyyyyyyyyyyyyyyyyy', daysDetailes)
-    // console.log('ffff', APIData)
-    // console.log('sssss', daysDetailes, icon, state, temp, location, humidity, precip_mm, feelslike_c, vis_miles, wind_mph, wind_kph, wind_dir, current)
-  })
-  .catch((error) => {
-    console.error(error);
-  })
-  .finally(() => {
-    console.log("Request completed");
-    // console.log(APIData)
-  });
-return ()=> {
-console.log('cansling apireq')
-controller.abort();
-}
+    console.log('dispatch fetchAxiosData from app components')
+    dispatch(fetchAxiosData(cityInput))  // call the async thunkfunction whitch is sending the actuall actions (pending, sucess ....)
+    
+     
+// axios.get("https://api.weatherapi.com/v1/forecast.json", {
+  
+//     params: {
+      
+//       key:'0618db3d343a4a6698373524260205',
+//       q:`${cityInput.city}`,
+//       days:'10'
+//     },
+//     // signal: controller.signal
+//   })
+//   .then((response) => {
+//     console.log(response.data);
+//     console.log('currenttttttttt', response.data.current.temp_c)
+//     // console.log('in useeffect', response.data.current.condition)
+//     // console.log('in response.data.forecast.forecastday', response.data.forecast.forecastday)
+//     // console.log('currentttttttt', response.data.current)
+//     // console.log('in useeffect', response.data.location.name)
+//     const daysDetailes = response.data.forecast.forecastday;
+//     console.log('TodayDetaileStateeeeeeeeeeeeeeee', daysDetailes)
+//     const icon = response.data.current.condition.icon;
+//     const state = response.data.current.condition.text;
+//     const temp = response.data.current.temp_c;
+//     const location = response.data.location.name;
+//     const humidity = response.data.current.humidity;
+//     const precip_mm = response.data.current.precip_mm;
+//     const feelslike_c = response.data.current.feelslike_c;
+//     const vis_miles = response.data.current.vis_miles;
+//     const wind_mph = response.data.current.wind_mph;
+//     const wind_kph = response.data.current.wind_kph;
+//     const wind_dir = response.data.current.wind_dir;
+//     const current = response.data.current;
+    
+//     // setAPIData({ icon, state, temp, location, humidity, precip_mm, feelslike_c, vis_miles, wind_mph, wind_kph, wind_dir, current});
+//     // setDaisDetailes(daysDetailes)
+//     // console.log('dayyyyyyyyyyyyyyyyyyy', daysDetailes)
+//     // console.log('ffff', APIData)
+//     // console.log('sssss', daysDetailes, icon, state, temp, location, humidity, precip_mm, feelslike_c, vis_miles, wind_mph, wind_kph, wind_dir, current)
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   })
+//   .finally(() => {
+//     console.log("Request completed");
+//     // console.log(APIData)
+//   });
+// return ()=> {
+// console.log('cansling apireq')
+// // controller.abort();
+// }
   }, [cityInput.searchClick])
   
 
@@ -212,7 +240,7 @@ controller.abort();
           marginTop:'60px'
         }}
        >
-        {APIData.temp} <FiberManualRecordOutlinedIcon sx={{fontSize:'small', marginBottom:'40px', color:'white'}}/>
+        { isLoadding  ? <CircularProgress style={{color:'white'}} /> : APIData.temp} <FiberManualRecordOutlinedIcon sx={{fontSize:'small', marginBottom:'40px', color:'white'}}/>
         
         </Box>
         <img src={TodayDetaileState[0]?.day?.condition?.icon} alt='' style={{marginInlineStart:'100px', marginTop:'-20px', height:'200px', width:'200px'}} />
